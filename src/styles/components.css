@@ -1,0 +1,525 @@
+@tailwind components;
+
+/* ===== 基础组件样式 ===== */
+@layer components {
+  /* 通用卡片样式 */
+  .card {
+    @apply p-6 bg-white rounded-2xl shadow-md flex flex-col gap-4;
+    border: 1px solid rgba(200,200,200,0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  /* 按钮样式组 */
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-cyan-400/40 transition-all duration-300;
+  }
+
+  .btn-primary-lg {
+    @apply bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold py-3 px-8 rounded-xl shadow-xl hover:scale-105 hover:shadow-indigo-400/50 transition-all duration-300 text-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-red-400 to-pink-400 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:scale-105 hover:shadow-pink-400/40 transition-all duration-300;
+  }
+
+  .action-btn {
+    @apply bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium;
+  }
+
+  /* 审核操作按钮 - 横向圆角矩形 */
+  .btn-approve {
+    @apply px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-200 font-semibold shadow-sm hover:shadow-md mx-1;
+  }
+
+  .btn-reject {
+    @apply px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-200 font-semibold shadow-sm hover:shadow-md mx-1;
+  }
+
+  .action-buttons {
+    @apply flex justify-center;
+  }
+
+  /* 加载状态 */
+  .loading-spinner {
+    @apply w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto;
+  }
+
+  /* 空状态 */
+  .empty-state {
+    @apply text-center py-16 text-gray-500 text-lg bg-white rounded-2xl shadow-sm border border-gray-100;
+  }
+}
+
+/* ===== 首页样式 ===== */
+@layer components {
+  /* 上传区域 */
+  .upload-zone {
+    @apply w-full p-6 rounded-xl flex flex-col items-center justify-center gap-4 border-2 border-dashed border-sky-300 bg-white/90 transition-all duration-300 cursor-pointer hover:shadow-lg hover:border-sky-400;
+  }
+
+  /* 反馈表单 */
+  .feedback-form {
+    @apply w-full p-6 bg-white border border-gray-200 rounded-2xl shadow-md flex flex-col gap-4;
+  }
+
+  .feedback-form input,
+  .feedback-form textarea {
+    @apply p-3 rounded-lg border border-gray-300 placeholder-gray-500 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .feedback-form h4 {
+    @apply text-gray-800 font-semibold text-lg;
+  }
+
+  .feedback-form .submitted-msg {
+    @apply text-green-600 mt-1 font-medium;
+  }
+
+  /* 图片容器 */
+  .image-fill {
+    @apply w-full h-full rounded-lg overflow-hidden shadow-md;
+  }
+
+  .image-fill img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* 结果区域固定高度容器 */
+  .result-image-container {
+    height: 380px;
+    min-height: 320px;
+  }
+
+  .result-card-container {
+    height: 380px;
+    min-height: 320px;
+  }
+
+  .result-items-container {
+    min-height: 260px;
+  }
+
+  /* 预测结果样式 */
+  .result-title {
+    @apply text-2xl font-bold text-sky-700 mb-6 pb-4 border-b border-sky-100;
+  }
+
+  .progress-item {
+    @apply p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white hover:shadow-sm transition-all duration-300;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* 概率条样式 */
+  .probability-bar {
+    @apply w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner;
+  }
+
+  .probability-fill {
+    @apply h-full rounded-full transition-all duration-1000 ease-out;
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #3b82f6);
+  }
+
+  .progress-bar {
+    @apply h-full rounded-full transition-all duration-1000 ease-out;
+  }
+
+  .bar-1 {
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  }
+
+  .bar-2 {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  }
+
+  .bar-3 {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  }
+
+  .probability-text {
+    @apply text-sm font-medium text-gray-700;
+  }
+
+  .result-card {
+    @apply bg-white rounded-2xl shadow-lg p-6 border border-gray-100;
+  }
+
+  .result-item {
+    @apply flex items-center justify-between py-4 px-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 rounded-lg transition-colors duration-200;
+  }
+
+  .result-label {
+    @apply text-gray-800 font-semibold flex-1 text-base;
+  }
+
+  .result-probability {
+    @apply flex items-center gap-4 w-56;
+  }
+}
+
+/* ===== 管理员样式 ===== */
+@layer components {
+  /* 侧边栏样式 */
+  .admin-sidebar {
+    @apply w-80 bg-gradient-to-b from-indigo-50 to-white p-8 shadow-xl flex flex-col border-r border-indigo-100 transition-all duration-300;
+  }
+
+  .sidebar-header {
+    @apply mb-8 pb-6 border-b border-indigo-100 relative;
+  }
+
+  .sidebar-title {
+    @apply text-2xl font-bold text-indigo-700 mb-2;
+  }
+
+  .sidebar-subtitle {
+    @apply text-sm text-gray-500;
+  }
+
+  .sidebar-nav {
+    @apply flex flex-col gap-3 flex-1;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-4 px-6 py-4 rounded-2xl text-gray-700 transition-all duration-300 cursor-pointer text-lg font-medium hover:bg-white hover:shadow-md hover:text-indigo-600 relative;
+  }
+
+  .nav-item.active {
+    @apply bg-white text-indigo-600 shadow-md border border-indigo-100;
+  }
+
+  .nav-text {
+    @apply font-semibold;
+  }
+
+  /* 侧边栏统计 */
+  .sidebar-stats {
+    @apply mt-auto bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-indigo-100;
+  }
+
+  .stat-item {
+    @apply mb-4 last:mb-0;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-500 font-medium mb-1;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-gray-800;
+  }
+
+  /* 管理员顶部栏 */
+  .admin-topbar {
+    @apply flex items-center justify-between p-6 border-b bg-white/80 backdrop-blur-sm;
+  }
+
+  .admin-title {
+    @apply text-3xl font-bold text-gray-800;
+  }
+
+  .admin-subtitle {
+    @apply text-base text-gray-500 mt-2;
+  }
+
+  .admin-actions {
+    @apply flex items-center gap-4;
+  }
+
+  /* 登录弹窗 */
+  .admin-login-modal {
+    @apply fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 backdrop-blur-sm;
+  }
+
+  .admin-login-box {
+    @apply bg-white p-8 rounded-2xl shadow-2xl w-96 flex flex-col gap-6 border border-gray-100;
+  }
+
+  .admin-login-box h2 {
+    @apply text-2xl font-bold text-center text-gray-800;
+  }
+
+  .admin-login-box input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 text-gray-700;
+  }
+
+  .admin-login-box .btn-group {
+    @apply flex justify-end gap-4;
+  }
+
+  /* 筛选器样式 */
+  .filter-container {
+    @apply flex flex-wrap gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 mb-8;
+  }
+
+  .filter-select {
+    @apply px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 font-medium;
+  }
+
+  .filter-input {
+    @apply px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 font-medium;
+  }
+
+  .filter-button {
+    @apply px-6 py-3 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-all duration-200 font-semibold shadow-md hover:shadow-lg;
+  }
+
+  .reset-button {
+    @apply px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-semibold;
+  }
+
+  .filter-label {
+    @apply text-gray-700 font-medium whitespace-nowrap;
+  }
+
+  /* 表格样式 */
+  .data-table {
+    @apply w-full bg-white rounded-2xl shadow-lg overflow-hidden;
+  }
+
+  .table-container {
+    @apply flex-1 overflow-auto;
+    max-height: calc(100vh - 400px);
+  }
+
+  .table-header {
+    @apply bg-gradient-to-r from-indigo-50 to-blue-50 px-8 py-5 border-b border-gray-200;
+  }
+
+  .table-header-cell {
+    @apply px-6 py-4 text-left font-semibold text-gray-700 bg-gradient-to-r from-indigo-50 to-blue-50 sticky top-0;
+  }
+
+  .table-row {
+    @apply px-8 py-5 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200;
+  }
+
+  .table-cell {
+    @apply py-4 px-6 text-gray-700 text-base;
+  }
+
+  .table-image {
+    @apply w-24 h-24 object-cover shadow-md rounded-xl;
+  }
+
+  /* 状态徽章 */
+  .status-badge {
+    @apply px-3 py-1.5 rounded-full text-sm font-medium;
+  }
+
+  .status-pending {
+    @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
+  }
+
+  .status-approved {
+    @apply bg-green-100 text-green-800 border border-green-200;
+  }
+
+  .status-rejected {
+    @apply bg-red-100 text-red-800 border border-red-200;
+  }
+
+  /* 分页样式 */
+  .pagination-info {
+    @apply text-sm text-gray-600;
+  }
+
+  .page-btn {
+    @apply px-3 py-1.5 rounded-lg transition-all duration-200 font-medium;
+  }
+
+  .page-btn-active {
+    @apply bg-indigo-500 text-white shadow-sm;
+  }
+
+  .page-btn:not(.page-btn-active) {
+    @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+  }
+
+  .prev-next {
+    @apply px-4 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium;
+  }
+
+  /* 统计卡片 */
+  .stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300;
+  }
+
+  .review-badge {
+    @apply inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium ml-2;
+    box-shadow: 0 4px 12px rgba(34,197,94,0.1);
+  }
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 1536px) {
+  .max-w-7xl {
+    max-width: 70rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .max-w-7xl {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    @apply w-20;
+  }
+  
+  .admin-sidebar:not(.collapsed) {
+    @apply w-64;
+  }
+  
+  .filter-container {
+    @apply flex-col items-start gap-3;
+  }
+  
+  .filter-input {
+    @apply w-full;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    @apply w-full p-6;
+  }
+  
+  .stats-grid {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .filter-container {
+    @apply flex-col p-4;
+  }
+  
+  .result-probability {
+    @apply w-48;
+  }
+  
+  .nav-item {
+    @apply px-4 py-3 text-base;
+  }
+  
+  .admin-login-box {
+    @apply w-80 p-6 mx-4;
+  }
+
+  .result-image-container,
+  .result-card-container {
+    height: 360px;
+    min-height: 360px;
+  }
+  
+  .result-items-container {
+    min-height: 300px;
+  }
+  
+  .progress-item {
+    min-height: 85px;
+  }
+}
+
+/* ===== 工具类 ===== */
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+/* ===== 侧边栏收起状态样式 ===== */
+.sidebar-collapsed {
+  @apply w-16 !important;
+  @apply p-4 !important;
+}
+
+.sidebar-collapsed .sidebar-header {
+  @apply mb-4 pb-4 !important;
+}
+
+.sidebar-collapsed .sidebar-nav,
+.sidebar-collapsed .sidebar-stats {
+  @apply hidden !important;
+}
+
+.sidebar-toggle-btn {
+  @apply absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all border border-gray-200 text-gray-600 hover:text-gray-800;
+}
+
+.sidebar-collapsed .sidebar-toggle-btn {
+  @apply static mx-auto;
+}
+
+/* ===== 内容居中布局 ===== */
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== 空状态增强样式 ===== */
+.empty-state {
+  @apply text-center py-16 text-gray-500 text-lg bg-white rounded-2xl shadow-sm border border-gray-100;
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 1536px) {
+  .max-w-7xl {
+    max-width: 70rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .max-w-7xl {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar:not(.sidebar-collapsed) {
+    @apply w-64;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    @apply w-full;
+  }
+  
+  .sidebar-collapsed {
+    @apply w-16;
+  }
+
+.admin-topbar {
+  @apply bg-white border-b border-gray-200 shadow-sm flex items-center;
+  min-height: 3.5rem; /* 让它至少够用，但不固定 */
+}
+
+
+.admin-title {
+  @apply text-xl font-semibold text-gray-800 leading-tight;
+}
+
+.admin-subtitle {
+  @apply text-sm text-gray-500 mt-0.5;
+}
+
+.admin-actions button {
+  @apply text-sm rounded-lg px-3 py-1.5;
+}
+
+}

@@ -1,0 +1,18 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components; /* ⚠ 必须在这里存在 */
+@tailwind utilities;
+
+/* 导入自定义 components 层 */
+@import "./components.css";
+
+/* 全局 base 样式 */
+@layer base {
+  body {
+    @apply bg-gradient-to-b from-indigo-50 to-white text-gray-800 antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}
