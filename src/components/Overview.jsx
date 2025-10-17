@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
-  PieChart, Pie, Cell, ResponsiveContainer, Legend 
+  PieChart, Pie, Cell, ResponsiveContainer
 } from "recharts";
 import { getAdminStats } from "../api/api";
 
-// 预定义一组美观的颜色
+// 预定义一组颜色
 const COLORS = [
   '#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088fe', 
   '#00c49f', '#ffbb28', '#ff6b6b', '#4ecdc4', '#45b7d1',
@@ -194,178 +194,176 @@ export default function Overview({ statsFromParent = null, loading = false, onRe
               </div>
             </div>
 
-            {/* 双图表布局 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              {/* 矿物类别分布 */}
-              <section className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">矿物类别分布</h3>
-                  
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => setChartView("bar")}
-                      className={`px-3 py-1 rounded-md text-sm font-medium ${
-                        chartView === "bar" 
-                        ? "bg-blue-500 text-white" 
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      柱状图
-                    </button>
-                    <button
-                      onClick={() => setChartView("pie")}
-                      className={`px-3 py-1 rounded-md text-sm font-medium ${
-                        chartView === "pie" 
-                        ? "bg-blue-500 text-white" 
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      饼状图
-                    </button>
-                  </div>
-                </div>
-                
-                {stats.class_distribution.length > 0 ? (
-                  <div className="h-80">
-                    <ResponsiveContainer width="100%" height="100%">
-                      {chartView === "bar" ? (
-                        <BarChart
-                          data={stats.class_distribution}
-                          margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                          <XAxis 
-                            dataKey="label" 
-                            angle={-45}
-                            textAnchor="end"
-                            height={60}
-                            interval={0}
-                            fontSize={12}
-                          />
-                          <YAxis fontSize={12} />
-                          <Tooltip content={<CustomTooltip />} />
-                          <Bar 
-                            dataKey="count" 
-                            name="数量"
-                            fill="#8884d8"
-                            radius={[4, 4, 0, 0]}
-                          >
-                            {stats.class_distribution.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Bar>
-                        </BarChart>
-                      ) : (
-                        <PieChart>
-                          <Pie
-                            data={stats.class_distribution}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={true}
-                            label={({ label, percent }) => `${label}: ${(percent * 100).toFixed(0)}%`}
-                            outerRadius={100}
-                            fill="#8884d8"
-                            dataKey="count"
-                            nameKey="label"
-                          >
-                            {stats.class_distribution.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Tooltip formatter={(value) => [`${value} 条`, '数量']} />
-                          <Legend 
-                            layout="vertical" 
-                            verticalAlign="middle" 
-                            align="right"
-                            wrapperStyle={{ paddingLeft: 20 }}
-                          />
-                        </PieChart>
-                      )}
-                    </ResponsiveContainer>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-                    <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <p className="text-lg">暂无类别分布数据</p>
-                    <p className="text-sm mt-2">用户提交反馈后，数据将显示在这里</p>
-                  </div>
-                )}
-              </section>
-
-              {/* 模型选用分布 */}
-              <section className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-semibold text-gray-800">模型选用分布</h3>
-                </div>
-                
-                {modelUsageData.length > 0 ? (
-                  <div className="h-80">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={modelUsageData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={true}
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="value"
-                          nameKey="name"
-                        >
-                          {modelUsageData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => [`${value}%`, '使用率']} />
-                        <Legend 
-                          layout="vertical" 
-                          verticalAlign="middle" 
-                          align="right"
-                          wrapperStyle={{ paddingLeft: 20 }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    
-                    <div className="mt-4 grid grid-cols-1 gap-2">
-                      {modelUsageData.map((model, index) => (
-                        <div key={model.name} className={`flex items-center justify-between p-3 rounded-lg ${
-                          model.name === stats.current_model ? 'bg-purple-50 border border-purple-200' : 'bg-gray-50'
-                        }`}>
-                          <div className="flex items-center">
-                            <div 
-                              className="w-3 h-3 rounded-full mr-2" 
-                              style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                            ></div>
-                            <span className={`text-sm font-medium ${
-                              model.name === stats.current_model ? 'text-purple-700' : 'text-gray-700'
-                            }`}>
-                              {model.name}
-                              {model.name === stats.current_model && (
-                                <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
-                                  当前使用
-                                </span>
-                              )}
-                            </span>
-                          </div>
-                          <span className="text-sm text-gray-600">{model.value}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-                    <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                    <p className="text-lg">暂无模型数据</p>
-                    <p className="text-sm mt-2">模型使用数据将显示在这里</p>
-                  </div>
-                )}
-              </section>
+        {/* 纵向图表布局 */}
+        <div className="space-y-6 mb-8">
+          {/* 矿物类别分布 */}
+          <section className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">矿物类别分布</h3>
+              
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setChartView("bar")}
+                  className={`px-3 py-1 rounded-md text-sm font-medium ${
+                    chartView === "bar" 
+                    ? "bg-blue-500 text-white" 
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  柱状图
+                </button>
+                <button
+                  onClick={() => setChartView("pie")}
+                  className={`px-3 py-1 rounded-md text-sm font-medium ${
+                    chartView === "pie" 
+                    ? "bg-blue-500 text-white" 
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  饼状图
+                </button>
+              </div>
             </div>
+            
+            {stats.class_distribution.length > 0 ? (
+              <div className="h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  {chartView === "bar" ? (
+                    <BarChart
+                      data={stats.class_distribution}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis 
+                        dataKey="label" 
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                        interval={0}
+                        fontSize={12}
+                      />
+                      <YAxis fontSize={12} />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Bar 
+                        dataKey="count" 
+                        name="数量"
+                        fill="#8884d8"
+                        radius={[4, 4, 0, 0]}
+                      >
+                        {stats.class_distribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  ) : (
+                    <PieChart>
+                      <Pie
+                        data={stats.class_distribution}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ index, name, percent }) => 
+                          index < 3 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''
+                        }
+                        outerRadius={120}
+                        fill="#8884d8"
+                        dataKey="count"
+                        nameKey="label"
+                      >
+                        {stats.class_distribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        formatter={(value, name) => [`${value} 条`, name]}
+                        labelFormatter={(label) => `类别: ${label}`}
+                      />
+                    </PieChart>
+                  )}
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p className="text-lg">暂无类别分布数据</p>
+                <p className="text-sm mt-2">用户提交反馈后，数据将显示在这里</p>
+              </div>
+            )}
+          </section>
+
+          {/* 模型选用分布 */}
+          <section className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-800">模型选用分布</h3>
+            </div>
+            
+            {modelUsageData.length > 0 ? (
+              <div className="h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={modelUsageData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ index, name, percent }) => 
+                        index < 3 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''
+                      }
+                      outerRadius={120}
+                      fill="#8884d8"
+                      dataKey="value"
+                      nameKey="name"
+                    >
+                      {modelUsageData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      formatter={(value, name) => [`${value}%`, name]}
+                      labelFormatter={(label) => `模型: ${label}`}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {modelUsageData.map((model, index) => (
+                    <div key={model.name} className={`flex items-center justify-between p-3 rounded-lg ${
+                      model.name === stats.current_model ? 'bg-purple-50 border border-purple-200' : 'bg-gray-50'
+                    }`}>
+                      <div className="flex items-center">
+                        <div 
+                          className="w-3 h-3 rounded-full mr-2" 
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        ></div>
+                        <span className={`text-sm font-medium ${
+                          model.name === stats.current_model ? 'text-purple-700' : 'text-gray-700'
+                        }`}>
+                          {model.name}
+                          {model.name === stats.current_model && (
+                            <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                              当前使用
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-600">{model.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                <p className="text-lg">暂无模型数据</p>
+                <p className="text-sm mt-2">模型使用数据将显示在这里</p>
+              </div>
+            )}
+          </section>
+        </div>
           </>
         )}
       </div>

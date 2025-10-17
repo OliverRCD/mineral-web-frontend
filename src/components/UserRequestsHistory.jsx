@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllRequests ,backurl} from "../api/api";
+import { backurl} from "../api/api";
 
 export default function UserRequestsHistory({ initialFeedbacks = [], loading }) {
   const [requests, setRequests] = useState(initialFeedbacks);
