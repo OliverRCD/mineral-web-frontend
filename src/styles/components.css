@@ -48,6 +48,34 @@
   .empty-state {
     @apply text-center py-16 text-gray-500 text-lg bg-white rounded-2xl shadow-sm border border-gray-100;
   }
+
+  /* PDF 导出优化样式 */
+  .report-content {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    page-break-after: avoid;
+  }
+
+  .report-header {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-image {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+  }
 }
 
 /* ===== 首页样式 ===== */

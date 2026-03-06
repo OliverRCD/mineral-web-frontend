@@ -49,3 +49,46 @@ export const getAdminStats = async () => {
   }
 };
 
+// API Key 验证接口（如果后端有的话）
+export const verifyApiKey = async () => {
+  try {
+    const res = await axios.post(`${API_PREFIX}/admin/apikey/verify`);
+    return res.data;
+  } catch (err) {
+    // 如果后端没有实现，抛出错误让前端处理
+    console.error("验证 API Key 失败:", err.response?.data || err);
+    throw err;
+  }
+};
+
+// ---------- API Key 管理 ----------
+export const getApiKey = async () => {
+  try {
+    const res = await axios.get(`${API_PREFIX}/admin/apikey`);
+    return res.data;
+  } catch (err) {
+    console.error("获取 API Key 失败:", err.response?.data || err);
+    throw err;
+  }
+};
+
+export const setApiKey = async (apiKey) => {
+  try {
+    const res = await axios.post(`${API_PREFIX}/admin/apikey`, { api_key: apiKey });
+    return res.data;
+  } catch (err) {
+    console.error("设置 API Key 失败:", err.response?.data || err);
+    throw err;
+  }
+};
+
+// ---------- 报告生成 ----------
+export const generateReport = async (data) => {
+  try {
+    const res = await axios.post(`${API_PREFIX}/generate_report`, data);
+    return res.data;
+  } catch (err) {
+    console.error("生成报告失败:", err.response?.data || err);
+    throw err;
+  }
+};

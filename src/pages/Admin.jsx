@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Overview from "../components/Overview";
 import Review from "../components/Review";
 import UserRequestsHistory from "../components/UserRequestsHistory";
+import ApiKeyConfig from "../components/ApiKeyConfig";
 import { getAdminStats, getAllFeedbacks, getAllRequests } from "../api/api";
 
 export default function Admin() {
@@ -75,6 +76,13 @@ export default function Admin() {
     fetchRequests();
   };
 
+  const navItems = [
+    { id: "overview", label: "数据概览", icon: "📊" },
+    { id: "review", label: "反馈审核", icon: "✏️" },
+    { id: "requests", label: "请求历史", icon: "📋" },
+    { id: "apikey", label: "API Key 配置", icon: "🔑" }
+  ];
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-indigo-50 to-blue-50 overflow-hidden">
       {/* 侧边栏 */}
@@ -84,6 +92,7 @@ export default function Admin() {
         currentView={view}
         collapsed={sidebarCollapsed}
         setCollapsed={setSidebarCollapsed}
+        navItems={navItems}
       />
 
       {/* 主要内容区域 */}
@@ -132,6 +141,9 @@ export default function Admin() {
                 initialFeedbacks={requests}
                 loading={loadingRequests}
               />
+            )}
+            {view === "apikey" && (
+              <ApiKeyConfig />
             )}
           </div>
         </div>

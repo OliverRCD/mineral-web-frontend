@@ -1,21 +1,23 @@
 import React from "react";
 
-export default function Sidebar({ setView, stats, currentView, collapsed, setCollapsed }) {
+export default function Sidebar({ setView, stats, currentView, collapsed, setCollapsed, navItems }) {
   const totalRequests = stats?.total_requests ?? "-";
   const rawAcc = stats?.accuracy ?? 0;
   let accuracyPct = 0;
   if (typeof rawAcc === "string") {
     const p = parseFloat(rawAcc);
-    accuracyPct = Number.isNaN(p) ? 0 : p * 100;
+    accuracyPct = Number.isNaN(p) ? 0 : p;
   } else if (typeof rawAcc === "number") {
     accuracyPct = rawAcc <= 1 ? rawAcc * 100 : rawAcc;
   }
 
-  const navItems = [
+  const defaultNavItems = [
     { id: "overview", label: "数据概览", icon: "📊" },
     { id: "review", label: "反馈审核", icon: "✏️" },
     { id: "requests", label: "请求历史", icon: "📋" }
   ];
+
+  const nav = navItems || defaultNavItems;
 
   return (
     <aside className={`admin-sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
@@ -41,7 +43,7 @@ export default function Sidebar({ setView, stats, currentView, collapsed, setCol
       {/* 导航菜单 - 收起时隐藏 */}
       {!collapsed && (
         <nav className="sidebar-nav">
-          {navItems.map((item) => (
+          {nav.map((item) => (
             <div
               key={item.id}
               onClick={() => setView(item.id)}
